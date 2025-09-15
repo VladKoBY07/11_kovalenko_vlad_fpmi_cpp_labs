@@ -2,14 +2,19 @@
 
 int main()
 {
-    unsigned int n, s, i;
-    std::cin>>n;
-    s=0;
-    for(i=1;n>0;i=i+2)
+    unsigned int n, s=0, z=1;
+    if((std::cin>>n)&&(n>0))
     {
-        n--;
-        s=s+i;
+        for(int i=0; i<n; i++, z+=2)
+        {
+            s+=z;
+        }
+        std::cout<<"Sum: "<<s<<std::endl;
+        return 0;
     }
-    std::cout<<"Сумма: "<<s<<std::endl;
-    return 0;
+    else
+    {
+        std::cout<<"Error. Enter right number"<<std::endl;
+        return 1;
+    }
 }
