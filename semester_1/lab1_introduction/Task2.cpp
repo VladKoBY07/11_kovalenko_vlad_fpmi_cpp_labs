@@ -13,8 +13,8 @@ int main()
         {
             p=p*i;
         }
-    std::cout<<"Сумма: "<<s<<std::endl;
-    std::cout<<"Произведение: "<<p<<std::endl;
+    std::cout<<"Sum: "<<s<<std::endl;
+    std::cout<<"Pro: "<<p<<std::endl;
     return 0;
     }
     else
