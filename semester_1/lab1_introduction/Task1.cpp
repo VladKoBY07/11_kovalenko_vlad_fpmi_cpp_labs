@@ -3,7 +3,8 @@
 int main()
 {
     int a, b, d, i;
-    std::cin>>a>>b>>d;
+if(std::cin>>a>>b>>d)
+{
     i = a;
     if((a>b)||(d<0))
     {
@@ -17,4 +18,12 @@ int main()
             std::cout<<i<<" ";
         }
     }
+    return 0;
+}
+else
+{
+    std::cout<<"Error"<<std::endl;
+    return 1;
+}
+    
 }
