@@ -6,6 +6,7 @@ int digit(int z);
 
 int main()
 {
+    std::cout << "Enter your number:" << std::endl;
     int n;
     if((std::cin >> n) && (n > 0))
     {
@@ -73,4 +74,5 @@ int digit(int z)
         p *= 10;
     }
     return p;
+
 }
