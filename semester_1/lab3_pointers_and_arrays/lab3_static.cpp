@@ -3,7 +3,11 @@
 // static arrays
 
 #include <iostream>
+#include <cmath>
 #include <time.h>
+
+void bubbleSort(int arr[], int n);
+void Swap(int &a, int &b);
 
 int main() {
     const int MAX = 100;
@@ -89,22 +93,59 @@ int main() {
     }
 
     // 2. Сумма элементов после первого минимального элемента
-    int start = 0, sum = 0;
+    int start = 0, sum = 0, min = a[0];
     for(int i = 1; i < leng; i++)
     {
-        if(a[i] < a[i-1])
+        if((a[i] < a[i-1]) && (a[i] != min))
         {
+            min = a[i];
             start = i;
         }
     }
     if(start != leng)
     {
-        for(int i = start+1; i < leng; i++)
+        start++;
+        for(int i = start; i < leng; i++)
         {
             sum += a[i];
         }
     }
-    std::cout << std::endl << "Summary after " << start+1 << " element: " << sum << std::endl;
+    std::cout << std::endl << "Summary after " << start << " element: " << sum << std::endl;
+
+    // сортировка по модулю
+    bubbleSort(a, leng);
+    std::cout << "Abs-sorted array:" << std::endl;
+    for(int i=0; i < leng; i++)
+    {
+        std::cout << a[i] << " ";
+    }
 
     return 0;
+}
+
+void bubbleSort(int arr[], int n) // сортировка пузырьком по модулю
+{
+    for (int i = 0; i < n-1; i++)
+    {
+        bool swapping = false;
+        for (int j = 0; j < n-i-1; j++)
+        {
+            if (abs(arr[j]) > abs(arr[j+1]))
+            {
+            Swap(arr[j], arr[j+1]);
+            swapping = true;
+            }
+        }
+        if(!swapping)
+        {
+            break;
+        }
+    }
+}
+
+void Swap (int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
 }
