@@ -6,12 +6,13 @@
 #include <cmath>
 #include <time.h>
 
-void bubbleSort(int arr[], int n);
-void Swap(int &a, int &b);
+void bubbleSort(double arr[], int n);
+void Swap (double &a, double &b);
 
 int main() {
     const int MAX = 100;
-    int a[MAX], leng, from, to; // rand: [from; to]
+    int leng, from, to;
+    double a[MAX]; // rand: [from; to]
 
     std::cout << "Enter the length of the array (1-100): ";
     if( (!(std::cin >> leng)) || (leng < 1) || (leng > MAX))
@@ -21,7 +22,7 @@ int main() {
     }
 
     char mode;
-    std::cout << "How do you want to fill the array M/A? ";
+    std::cout << "How do you want to fill the array Manual/Auto (Enter M/A)? ";
     while( (!(std::cin >> mode)) || ((mode != 'M') && (mode != 'A')) )
     {
         std::cout << "Error. Enter the right mode!" << std::endl;
@@ -34,8 +35,7 @@ int main() {
             std::cout << "Enter the array values: " << std::endl;
             for(int i=0; i < leng; i++)
             {
-                if(std::cin >> a[i]) {}
-                else
+                if(!(std::cin >> a[i]))
                 {
                     std::cout << "Error. Wrong type" << std::endl;
                     return 1;
@@ -93,10 +93,11 @@ int main() {
     }
 
     // 2. Сумма элементов после первого минимального элемента
-    int start = 0, sum = 0, min = a[0];
+    int start = 0;
+    double sum = 0, min = a[0];
     for(int i = 1; i < leng; i++)
     {
-        if((a[i] < a[i-1]) && (a[i] != min))
+        if((a[i] < a[i-1]) && (a[i] < min))
         {
             min = a[i];
             start = i;
@@ -123,14 +124,14 @@ int main() {
     return 0;
 }
 
-void bubbleSort(int arr[], int n) // сортировка пузырьком по модулю
+void bubbleSort(double *arr, int n) // сортировка пузырьком по модулю
 {
     for (int i = 0; i < n-1; i++)
     {
         bool swapping = false;
         for (int j = 0; j < n-i-1; j++)
         {
-            if (abs(arr[j]) > abs(arr[j+1]))
+            if (fabs(arr[j]) > fabs(arr[j+1]))
             {
             Swap(arr[j], arr[j+1]);
             swapping = true;
@@ -143,9 +144,9 @@ void bubbleSort(int arr[], int n) // сортировка пузырьком п�
     }
 }
 
-void Swap (int &a, int &b)
+void Swap (double &a, double &b)
 {
-    int temp = a;
+    double temp = a;
     a = b;
     b = temp;
 }
