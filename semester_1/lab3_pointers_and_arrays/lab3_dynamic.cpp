@@ -17,8 +17,8 @@ int main() {
         std::cout << "Error. Enter the right number!" << std::endl;
         return 1;
     }
-
-    double* arr = new double [leng];
+    int PlusLeng = leng + 1;
+    double* arr = new double [PlusLeng];
 
     char mode;
     std::cout << "How do you want to fill the array M/A? ";
@@ -105,6 +105,47 @@ int main() {
     bubbleSort(arr, leng);
     std::cout << "Sorted array:" << std::endl;
     for(int i=0; i < leng; i++)
+    {
+        std::cout << arr[i] << " ";
+    }
+
+    //вставка элемента X
+    std::cout << std::endl << "Enter X value: ";
+    double X;
+    if(!(std::cin >> X))
+    {
+        std::cout << "Error. Enter the right number!" << std::endl;
+        return 1;
+    }
+
+    if((X <= arr[0]) || (X >= arr[leng-1]))
+    {
+        if(X <= arr[0])
+        {
+            for(int i = (PlusLeng-1); i > 0; i--)
+            {
+                arr[i] = arr[i-1];
+            }
+            arr[0] = X;
+        }
+        else
+        {
+            arr[PlusLeng-1] = X;
+        }
+    }
+    else
+    {
+        int posx;
+        for(posx=0; X > arr[posx]; posx++);
+        for(int i = (PlusLeng-1); i > posx; i--)
+        {
+            arr[i] = arr[i-1];
+        }
+        arr[posx] = X;
+    }
+
+    std::cout << "Final array:" << std::endl;
+    for(int i=0; i < PlusLeng; i++)
     {
         std::cout << arr[i] << " ";
     }
