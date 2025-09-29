@@ -6,7 +6,7 @@
 #include <cmath>
 #include <time.h>
 
-void bubbleSort(double arr[], int n);
+void bubbleSort(double *arr, int n);
 void Swap (double &a, double &b);
 
 int main() {
