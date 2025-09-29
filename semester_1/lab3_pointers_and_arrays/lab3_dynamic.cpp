@@ -5,6 +5,9 @@
 #include <iostream>
 #include <time.h>
 
+void bubbleSort(double *arr, int n);
+void Swap (double &a, double &b);
+
 int main() {
     int leng, from, to; // rand: [from; to]
 
@@ -15,7 +18,7 @@ int main() {
         return 1;
     }
 
-    int* arr = new int [leng];
+    double* arr = new double [leng];
 
     char mode;
     std::cout << "How do you want to fill the array M/A? ";
@@ -59,7 +62,7 @@ int main() {
             srand(time(0));
             for(int i=0; i < leng; i++)
             {
-                arr[i] = from + rand() % (to - from + 1);
+                arr[i] = from + rand()/3 % (to - from + 1);
             }
             break;
 
@@ -73,7 +76,8 @@ int main() {
     }
 
     // произведение между первым и последним отрицательным элементом
-    int lastPosition = -1, firstPosition = -1, product = 1;
+    int lastPosition = -1, firstPosition = -1;
+    double product = 1;
     for(int i=0; lastPosition == -1, i < leng; i++)
     {
         if(arr[i] < 0) lastPosition = i;
@@ -82,10 +86,10 @@ int main() {
     {
         if(arr[i] < 0) firstPosition = i;
     }
-    std::cout << std::endl << "FirstPos: " << firstPosition << " " << "LastPos: "<< lastPosition;
+    //std::cout << std::endl << "FirstPos: " << firstPosition << " " << "LastPos: "<< lastPosition;
     if((lastPosition == -1) || (firstPosition == -1) || (lastPosition == firstPosition))
     {
-        std::cout << "Can't find numbers between first and last negative";
+        std::cout << std::endl << "Can't find numbers between first and last negative" << std::endl;
     }
     else
     {
@@ -93,11 +97,48 @@ int main() {
         {
             product *= (arr[i]);
         }
-        std::cout << std::endl << "Product between first and last negative: " << product;
+        std::cout << std::endl << "Product between first and last negative: " << product << std::endl;
+    }
+
+
+    // сортировка по возрастанию
+    bubbleSort(arr, leng);
+    std::cout << "Sorted array:" << std::endl;
+    for(int i=0; i < leng; i++)
+    {
+        std::cout << arr[i] << " ";
     }
     
 
     delete [] arr;
     arr = nullptr;
     return 0;
+}
+
+
+void bubbleSort(double *arr, int n) // сортировка пузырьком
+{
+    for (int i = 0; i < n-1; i++)
+    {
+        bool swapping = false;
+        for (int j = 0; j < n-i-1; j++)
+        {
+            if (arr[j] > arr[j+1])
+            {
+            Swap(arr[j], arr[j+1]);
+            swapping = true;
+            }
+        }
+        if(!swapping)
+        {
+            break;
+        }
+    }
+}
+
+void Swap (double &a, double &b)
+{
+    double temp = a;
+    a = b;
+    b = temp;
 }
