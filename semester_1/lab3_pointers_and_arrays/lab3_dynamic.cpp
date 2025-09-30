@@ -38,6 +38,8 @@ int main() {
                 else
                 {
                     std::cout << "Error. Wrong type" << std::endl;
+                    delete [] arr;
+                    arr = nullptr;
                     return 1;
                 }
             }
@@ -49,12 +51,16 @@ int main() {
             if(!(std::cin >> from))
             {
                 std::cout << "Error. Enter the right number!" << std::endl;
+                delete [] arr;
+                arr = nullptr;
                 return 1;
             }
             std::cout << "B: ";
             if(!(std::cin >> to))
             {
                 std::cout << "Error. Enter the right number!" << std::endl;
+                delete [] arr;
+                arr = nullptr;
                 return 1;
             }
 
@@ -115,6 +121,8 @@ int main() {
     if(!(std::cin >> X))
     {
         std::cout << "Error. Enter the right number!" << std::endl;
+        delete [] arr;
+        arr = nullptr;
         return 1;
     }
 
