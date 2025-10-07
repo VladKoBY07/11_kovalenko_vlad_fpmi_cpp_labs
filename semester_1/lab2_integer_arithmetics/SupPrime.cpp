@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <string>
+#include <algorithm>
 
 bool isprime(int x);
 int length(int z);
@@ -20,7 +22,7 @@ int main()
         {
             if(isprime(a))
             {
-                leng=length(a); //length
+                /*leng=length(a); //length
                 ncomb=1;
                 for(int i=1; i<=leng; i++) //number of combinations
                 {
@@ -28,14 +30,20 @@ int main()
                 }
                 std::cout << "Prime number: " << a << std::endl;
                 std::cout << "Length of numder: " << leng << std::endl;
-                std::cout << "Possible combinations: "<< ncomb << std::endl;
+                std::cout << "Possible combinations: "<< ncomb << std::endl;*/
 
-                /*for(int i=0; i< ncomb; i++)
+                std::string number = std::to_string(a);
+                bool flag = 1;
+                while(std::next_permutation(number.begin(), number.end()))
                 {
-                    //перестановка цифр
-                }*/
-
-                if(leng == 2)
+                    int int_number = std::stoi(number);
+                    if(!(isprime(int_number)))
+                    {
+                        flag = 0;
+                    }
+                }
+                if(flag) std::cout << "Number is super prime!" << std::endl;
+                /*if(leng == 2)
                 {
                     int number = a;
                     std::cout << "Combinations: " << number;
@@ -47,7 +55,7 @@ int main()
                     {
                         std::cout << "Number is super prime!" << std::endl;
                     }
-                }
+                }*/
                 std::cout << std::endl;
             }
             else
