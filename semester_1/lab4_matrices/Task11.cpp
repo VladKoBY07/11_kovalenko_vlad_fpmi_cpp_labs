@@ -6,8 +6,8 @@
 
 int **AllocateMatrix(int, int);
 void DeleteMatrix(int **, int);
-int Enter_check_int(const int, const int);
-int Enter_check_int();
+int Enter_check_int(const int); // from int to infinity
+int Enter_check_int();          // checking only type
 void FillMatrix(int **&, int, int, char);
 int GenerateRandom(const int, const int);
 void PrintMatrix(int **, int, int);
@@ -21,12 +21,11 @@ int Count_colums_without_zero(int **, int, int);
 int main() {
 
     int rows, cols;
-    const int  max_rows = 1000, max_cols = 1000;   // Max size of matrix
     std::cout << "Creating matrix (rows x cols)" << std::endl;
     std::cout << "Enter rows: ";
-    rows = Enter_check_int(1, max_rows);
+    rows = Enter_check_int(1);
     std::cout << "Enter cols: ";
-    cols = Enter_check_int(1, max_cols);
+    cols = Enter_check_int(1);
     std::cout << std::endl;
 
     int ** matrix = AllocateMatrix(rows, cols);
@@ -81,13 +80,13 @@ void DeleteMatrix(int ** matrix, int rows)
     }
 }
 
-int Enter_check_int(const int from, const int to) // Entering int number in [from, to]
+int Enter_check_int(const int from) // Entering int number in [from, ...]
 {
     int number;
-    while(!(std::cin >> number)||(number < from)||(number > to))
+    while(!(std::cin >> number)||(number < from))
     {
         ClearCin();
-        std::cout << std::endl << "Enter right number! (type: int, from " << from << " to " << to << ")" << std::endl;
+        std::cout << std::endl << "Enter right number! (type: int, from " << from <<" )" << std::endl;
     }
     return number;
 }
@@ -115,7 +114,7 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
                 std::cout << "Enter row " << row+1 << " values (" << cols << " numbers): " << std::endl;
                 for(int col = 0; col < cols; ++col)
                 {
-                    std::cin >> matrix[row][col];
+                    matrix[row][col] = Enter_check_int();
                 }
                 std::cout << std::endl;
             }
