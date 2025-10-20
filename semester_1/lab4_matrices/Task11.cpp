@@ -13,6 +13,9 @@ int GenerateRandom(const int, const int);
 void PrintMatrix(int **, int, int);
 void ClearCin();
 
+int Measure_characteristics_in_row(int **, int, int);
+void BubbleSort_colums(int **&, int, int);
+void Swap_rows(int **&, int, int);
 int Count_colums_without_zero(int **, int, int);
 
 int main() {
@@ -43,6 +46,10 @@ int main() {
     ClearCin();
     
     FillMatrix(matrix, rows, cols, mode);
+    //std::cout << "Before Sorting:" << std::endl;
+    //PrintMatrix(matrix, rows, cols);
+
+    BubbleSort_colums(matrix, rows, cols);
     PrintMatrix(matrix, rows, cols);
 
     std::cout << "Number of colums without zero: " << Count_colums_without_zero(matrix, rows, cols) << std::endl;
@@ -169,6 +176,51 @@ void ClearCin()
 {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+int Measure_characteristics_in_row(int **matrix, int row_number, int cols)
+{
+    if(cols < 1)
+    {
+        return 0;
+    }
+    int Characteristics = 0, number;
+    for(int col = 0; col < cols; ++col)
+    {
+        number = matrix[row_number][col];
+        if(number > 0)
+        {
+            Characteristics += number;
+        }
+    }
+    return Characteristics;
+}
+
+void BubbleSort_colums(int **&matrix, int rows, int cols)
+{
+    for(int i = 0; i < rows-1; ++i)
+    {
+        bool swapping = false;
+        for(int j = 0; j < rows-i-1; ++j)
+        {
+            if(Measure_characteristics_in_row(matrix, j, cols) > Measure_characteristics_in_row(matrix, j+1, cols))
+            {
+                Swap_rows(matrix, j, j+1);
+                swapping = true;
+            }
+        }
+        if(!swapping)
+        {
+            break;
+        }
+    }
+}
+
+void Swap_rows(int **&matrix, int row1, int row2)
+{
+    int *temp = matrix[row1];
+    matrix[row1] = matrix[row2];
+    matrix[row2] = temp;
 }
 
 int Count_colums_without_zero(int **matrix, int rows, int cols)
