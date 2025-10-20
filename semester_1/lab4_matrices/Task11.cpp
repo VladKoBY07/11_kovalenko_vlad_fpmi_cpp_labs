@@ -45,8 +45,7 @@ int main() {
     FillMatrix(matrix, rows, cols, mode);
     PrintMatrix(matrix, rows, cols);
 
-    int Cols_without_zero = Count_colums_without_zero(matrix, rows, cols);
-    std::cout << "Number of colums without zero: " << Cols_without_zero << std::endl;
+    std::cout << "Number of colums without zero: " << Count_colums_without_zero(matrix, rows, cols) << std::endl;
 
     DeleteMatrix(matrix, rows);
     return 0;
@@ -123,6 +122,11 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
             std::cout << "B: ";
             int to = Enter_check_int();
 
+            if(from > to)
+            {
+                std::swap(from, to);
+            }
+
             // filling the matrix with random numbers
             for(int row = 0; row < rows; ++row)
             {
@@ -154,7 +158,7 @@ void PrintMatrix(int **matrix, int rows, int cols)
         {
             for(int col = 0; col < cols; col++)
             {
-                std::cout << matrix[row][col] << " ";
+                std::cout << matrix[row][col] << "   ";
             }
             std::cout << std::endl;
         }
