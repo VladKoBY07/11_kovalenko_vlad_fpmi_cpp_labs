@@ -13,10 +13,13 @@ int GenerateRandom(const int, const int);
 void PrintMatrix(int **, int, int);
 void ClearCin();
 
-void BubbleSort(int **&, int, int, int, int, int*);
-void InsertionSort(int **&, int, int, int, int, int*);
-void MergeSort(int **&, int, int, int, int, int*);
-void merge(int **&, int, int, int, int, int, int*);
+void BubbleSort(int **&, int, int, bool(*)(int, int));
+void InsertionSort(int **&, int, int, bool(*)(int, int));
+void MergeSort(int **&, int, int, int, int*);
+void merge(int **&, int, int, int, int, int*);
+
+bool A_more_than_B(int, int);
+bool A_less_than_B(int, int);
 
 int main() {
 
@@ -61,7 +64,7 @@ int main() {
     }
     ClearCin();
 
-    void (*sort_type)(int **&, int, int, int, int, int*);
+    void (*sort_type)(int **&, int, int, bool(*)(int, int));
     switch (sort_mode_char)
     {
         case 'B':
@@ -76,16 +79,36 @@ int main() {
 
         case 'M':
         case 'm':
-            sort_type = MergeSort;
+            //sort_type = MergeSort;
             break;
     }
 
-    //row changing
+    //comparing types
+    bool (*comp)(int, int);
+    char comparing_symbol;
+    std::cout << "How do you want to sort the matrix a1>a2 or a1<a2? Enter >/<" << std::endl;
+    while( (!(std::cin >> comparing_symbol)) || !((comparing_symbol == '>') || (comparing_symbol == '<')) )
+    {
+        std::cout << "Error. Enter the right mode!" << std::endl;
+        std::cout << "Please try again: ";
+        ClearCin();
+    }
+    if(comparing_symbol == '>')
+    {
+        comp = A_more_than_B;
+    }
+    else
+    {
+        comp = A_less_than_B;
+    }
+
+
+    //row changing and sorting
     int left = 0, right = cols;
     int *temp = new int[cols];
     for(int row = 0; row < rows; ++row)
     {
-        sort_type(matrix, row, cols, left, right, temp);
+        sort_type(matrix, row, cols, comp);
     }
     PrintMatrix(matrix, rows, cols);
 
@@ -215,14 +238,14 @@ void ClearCin()
 }
 
 
-void BubbleSort(int **&matrix, int row, int cols, int left, int right, int *temp)
+void BubbleSort(int **&matrix, int row, int cols, bool (*comp)(int, int))
 {
     for(int i = 0; i < cols; ++i)
     {
         bool swapping = false;
         for(int j = 0; j < cols-i-1; ++j)
         {
-            if(matrix[row][j] > matrix[row][j+1])
+            if(!comp(matrix[row][j], matrix[row][j+1]))
             {
                 std::swap(matrix[row][j], matrix[row][j+1]);
                 swapping = true;
@@ -235,13 +258,13 @@ void BubbleSort(int **&matrix, int row, int cols, int left, int right, int *temp
     }
 }
 
-void InsertionSort(int **&matrix, int row, int cols, int left, int right, int *temp)
+void InsertionSort(int **&matrix, int row, int cols, bool (*comp)(int, int))
 {
     int x, i, j;
     for(i = 1; i < cols; ++i)
     {
         x = matrix[row][i];
-        for(j = i-1; (j >= 0) && (matrix[row][j] > x); j--)
+        for(j = i-1; (j >= 0) && (!comp(matrix[row][j], x)); j--)
         {
             matrix[row][j+1] = matrix[row][j];
         }
@@ -249,16 +272,16 @@ void InsertionSort(int **&matrix, int row, int cols, int left, int right, int *t
     }
 }
 
-void MergeSort(int **&matrix, int row, int cols, int left, int right, int *temp)
+/*void MergeSort(int **&matrix, int row, int left, int right, int *temp)
 {
     if(right - left <= 1) return;
     int mid = (left + right)/2;
-    MergeSort(matrix, row, cols, left, mid, temp);
-    MergeSort(matrix, row, cols, mid, right, temp);
-    merge(matrix, row, cols, left, mid, right, temp);
+    MergeSort(matrix, row, left, mid, temp);
+    MergeSort(matrix, row, mid, right, temp);
+    merge(matrix, row, left, mid, right, temp);
 }
 
-void merge(int **&matrix, int row, int cols, int left, int mid, int right, int *temp)
+void merge(int **&matrix, int row, int left, int mid, int right, int *temp)
 {
     int i = left, j = mid, k = left;
     while(i < mid && j < right)
@@ -291,4 +314,14 @@ void merge(int **&matrix, int row, int cols, int left, int mid, int right, int *
     {
         matrix[row][t] = temp[t];
     }
+}
+*/
+bool A_more_than_B(int a, int b)
+{
+    return a > b;
+}
+
+bool A_less_than_B(int a, int b)
+{
+    return a < b;
 }
