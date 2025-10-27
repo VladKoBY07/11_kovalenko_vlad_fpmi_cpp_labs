@@ -15,8 +15,9 @@ void ClearCin();
 
 void BubbleSort(int **&, int, int, bool(*)(int, int));
 void InsertionSort(int **&, int, int, bool(*)(int, int));
-void MergeSort(int **&, int, int, int, int*);
-void merge(int **&, int, int, int, int, int*);
+void DoMergeSort(int **&, int, int, bool(*)(int, int));
+void MergeSort(int **&, int, int, int, int*, bool (*)(int, int));
+void merge(int **&, int, int, int, int, int*, bool (*)(int, int));
 
 bool A_more_than_B(int, int);
 bool A_less_than_B(int, int);
@@ -79,7 +80,7 @@ int main() {
 
         case 'M':
         case 'm':
-            //sort_type = MergeSort;
+            sort_type = DoMergeSort;
             break;
     }
 
@@ -272,21 +273,29 @@ void InsertionSort(int **&matrix, int row, int cols, bool (*comp)(int, int))
     }
 }
 
-/*void MergeSort(int **&matrix, int row, int left, int right, int *temp)
+void DoMergeSort(int **&matrix, int row, int cols, bool (*comp)(int, int))
+{
+    int left = 0, right = cols;
+    int *temp = new int[cols];
+    MergeSort(matrix, row, left, right, temp, comp);
+    delete [] temp;
+}
+
+void MergeSort(int **&matrix, int row, int left, int right, int *temp, bool (*comp)(int, int))
 {
     if(right - left <= 1) return;
     int mid = (left + right)/2;
-    MergeSort(matrix, row, left, mid, temp);
-    MergeSort(matrix, row, mid, right, temp);
-    merge(matrix, row, left, mid, right, temp);
+    MergeSort(matrix, row, left, mid, temp, comp);
+    MergeSort(matrix, row, mid, right, temp, comp);
+    merge(matrix, row, left, mid, right, temp, comp);
 }
 
-void merge(int **&matrix, int row, int left, int mid, int right, int *temp)
+void merge(int **&matrix, int row, int left, int mid, int right, int *temp, bool (*comp)(int, int))
 {
     int i = left, j = mid, k = left;
     while(i < mid && j < right)
     {
-        if(matrix[row][i] <= matrix[row][j])
+        if(!comp(matrix[row][i], matrix[row][j]))
         {
             temp[k] = matrix[row][i];
             i++;
@@ -315,7 +324,8 @@ void merge(int **&matrix, int row, int left, int mid, int right, int *temp)
         matrix[row][t] = temp[t];
     }
 }
-*/
+
+
 bool A_more_than_B(int a, int b)
 {
     return a > b;
