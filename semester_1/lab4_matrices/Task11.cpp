@@ -36,19 +36,27 @@ int main() {
 
     char mode;
     std::cout << "How do you want to fill the matrix Manually/Auto?";
-    while( (!(std::cin >> mode)) || !((mode == 'M') || (mode == 'A') || (mode == 'm') || (mode == 'a')) )
+    try
     {
-        std::cout << "Error. Enter the right mode!" << std::endl;
-        std::cout << "Please try again: ";
-        ClearCin();
+        std::cin >> mode;
+        if((mode != 'M')&&(mode != 'm')&&(mode != 'A')&&(mode != 'a'))
+        {
+            throw(1);
+        }
+    }
+    catch(...)
+    {
+        std::cerr << "Error. Wrong input value" << std::endl;
+        exit(1);
     }
     ClearCin();
     
     FillMatrix(matrix, rows, cols, mode);
-    //std::cout << "Before Sorting:" << std::endl;
-    //PrintMatrix(matrix, rows, cols);
+    std::cout << "Before Sorting:" << std::endl;
+    PrintMatrix(matrix, rows, cols);
 
     BubbleSort_colums(matrix, rows, cols);
+    std::cout << "After Sorting: " << std::endl;
     PrintMatrix(matrix, rows, cols);
 
     std::cout << "Number of colums without zero: " << Count_colums_without_zero(matrix, rows, cols) << std::endl;
@@ -83,10 +91,17 @@ void DeleteMatrix(int ** matrix, int rows)
 int Enter_check_int(const int from) // Entering int number in [from, ...]
 {
     int number;
-    while(!(std::cin >> number)||(number < from))
+    try{
+        std::cin >> number;
+        if(!number && (number != 0) || number < from)
+        {
+            throw(1);
+        }
+    }
+    catch(...)
     {
-        ClearCin();
-        std::cout << std::endl << "Enter right number! (type: int, from " << from <<" )" << std::endl;
+        std::cerr << "Error. Wrong input number";
+        exit(1);
     }
     return number;
 }
@@ -94,10 +109,17 @@ int Enter_check_int(const int from) // Entering int number in [from, ...]
 int Enter_check_int()
 {
     int number;
-    while(!(std::cin >> number))
+    try{
+        std::cin >> number;
+        if(!number && number != 0)
+        {
+            throw(1);
+        }
+    }
+    catch(...)
     {
-        ClearCin();
-        std::cout << std::endl << "Enter right number! (type: int)" << std::endl;
+        std::cerr << "Error. Wrong input number";
+        exit(1);
     }
     return number;
 }
@@ -159,7 +181,6 @@ void PrintMatrix(int **matrix, int rows, int cols)
 {
     if(matrix != nullptr)
     {
-        std::cout << "Your Matrix: " << std::endl;
         for(int row = 0; row < rows; ++row)
         {
             for(int col = 0; col < cols; col++)
