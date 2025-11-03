@@ -6,8 +6,6 @@
 
 int **AllocateMatrix(int, int);
 void DeleteMatrix(int **, int);
-int Enter_check_int(const int); // from int to infinity
-int Enter_check_int();          // checking only type
 void FillMatrix(int **&, int, int, char);
 int GenerateRandom(const int, const int);
 void PrintMatrix(int **, int, int);
@@ -19,35 +17,35 @@ void Swap_rows(int **&, int, int);
 int Count_colums_without_zero(int **, int, int);
 
 int main() {
-
+try{
     int rows, cols;
     std::cout << "Creating matrix (rows x cols)" << std::endl;
     std::cout << "Enter rows: ";
-    rows = Enter_check_int(1);
+    std::cin >> rows;
+    if(std::cin.fail()||(rows < 1))
+    {
+        throw("Rows value error!");
+    }
     std::cout << "Enter cols: ";
-    cols = Enter_check_int(1);
+    std::cin >> cols;
+    if(std::cin.fail()||(cols < 1))
+    {
+        throw("Cols value error!");
+    }
     std::cout << std::endl;
 
     int ** matrix = AllocateMatrix(rows, cols);
     if(matrix == nullptr)
     {
-        return 1;
+        throw("Matrix allocation error!");
     }
 
     char mode;
     std::cout << "How do you want to fill the matrix Manually/Auto?";
-    try
+    std::cin >> mode;
+    if((mode != 'M')&&(mode != 'm')&&(mode != 'A')&&(mode != 'a'))
     {
-        std::cin >> mode;
-        if((mode != 'M')&&(mode != 'm')&&(mode != 'A')&&(mode != 'a'))
-        {
-            throw(1);
-        }
-    }
-    catch(...)
-    {
-        std::cerr << "Error. Wrong input value" << std::endl;
-        exit(1);
+        throw("Mode value error!");
     }
     ClearCin();
     
@@ -60,9 +58,19 @@ int main() {
     PrintMatrix(matrix, rows, cols);
 
     std::cout << "Number of colums without zero: " << Count_colums_without_zero(matrix, rows, cols) << std::endl;
-
     DeleteMatrix(matrix, rows);
     return 0;
+}
+catch(const char* err)
+{
+    std::cerr << err;
+    return 1;
+}
+catch(...)
+{
+    std::cerr << "Unknown error!";
+    return 1;
+}
 }
 
 int **AllocateMatrix(int rows, int cols)
@@ -88,42 +96,6 @@ void DeleteMatrix(int ** matrix, int rows)
     }
 }
 
-int Enter_check_int(const int from) // Entering int number in [from, ...]
-{
-    int number;
-    try{
-        std::cin >> number;
-        if(!number && (number != 0) || number < from)
-        {
-            throw(1);
-        }
-    }
-    catch(...)
-    {
-        std::cerr << "Error. Wrong input number";
-        exit(1);
-    }
-    return number;
-}
-
-int Enter_check_int()
-{
-    int number;
-    try{
-        std::cin >> number;
-        if(!number && number != 0)
-        {
-            throw(1);
-        }
-    }
-    catch(...)
-    {
-        std::cerr << "Error. Wrong input number";
-        exit(1);
-    }
-    return number;
-}
-
 void FillMatrix(int **&matrix, int rows, int cols, char mode)
 {
     switch (mode)
@@ -136,7 +108,11 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
                 std::cout << "Enter row " << row+1 << " values (" << cols << " numbers): " << std::endl;
                 for(int col = 0; col < cols; ++col)
                 {
-                    matrix[row][col] = Enter_check_int();
+                    std::cin >> matrix[row][col];
+                    if(std::cin.fail())
+                    {
+                        throw("Matrix element error!");
+                    }
                 }
                 std::cout << std::endl;
             }
@@ -146,9 +122,19 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
         case 'a':
             std::cout << "Enter the range of the array values [A, B]:" << std::endl;
             std::cout << "A: ";
-            int from = Enter_check_int();
+            int from;
+            std::cin >> from;
+            if(std::cin.fail())
+            {
+                throw("Range value error!");
+            }
             std::cout << "B: ";
-            int to = Enter_check_int();
+            int to;
+            std::cin >> to;
+            if(std::cin.fail())
+            {
+                throw("Range value error!");
+            }
 
             if(from > to)
             {
@@ -189,6 +175,10 @@ void PrintMatrix(int **matrix, int rows, int cols)
             }
             std::cout << std::endl;
         }
+    }
+    else
+    {
+        throw("Printing error: matrix is empty!");
     }
 }
 
