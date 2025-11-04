@@ -8,8 +8,12 @@ bool IsLetter(char x)
 
 bool IsVovel(char x)
 {
-    return (x == 'a')||(x == 'A')||(x == 'e')||(x == 'E')||(x == 'i')||(x == 'I')
-    ||(x == 'o')||(x == 'O')||(x == 'u')||(x == 'U')||(x == 'y')||(x == 'Y');
+    return (x == 'a')||(x == 'A')||
+           (x == 'e')||(x == 'E')||
+           (x == 'i')||(x == 'I')||
+           (x == 'o')||(x == 'O')||
+           (x == 'u')||(x == 'U')||
+           (x == 'y')||(x == 'Y');
 }
 
 int main()
