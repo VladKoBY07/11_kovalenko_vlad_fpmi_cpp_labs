@@ -21,14 +21,12 @@ try{
     int rows, cols;
     std::cout << "Creating matrix (rows x cols)" << std::endl;
     std::cout << "Enter rows: ";
-    std::cin >> rows;
-    if(std::cin.fail()||(rows < 1))
+    if(!(std::cin >> rows)||(rows < 1))
     {
         throw("Rows value error!");
     }
     std::cout << "Enter cols: ";
-    std::cin >> cols;
-    if(std::cin.fail()||(cols < 1))
+    if(!(std::cin >> cols)||(cols < 1))
     {
         throw("Cols value error!");
     }
@@ -108,8 +106,7 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
                 std::cout << "Enter row " << row+1 << " values (" << cols << " numbers): " << std::endl;
                 for(int col = 0; col < cols; ++col)
                 {
-                    std::cin >> matrix[row][col];
-                    if(std::cin.fail())
+                    if(!(std::cin >> matrix[row][col]))
                     {
                         throw("Matrix element error!");
                     }
@@ -123,15 +120,13 @@ void FillMatrix(int **&matrix, int rows, int cols, char mode)
             std::cout << "Enter the range of the array values [A, B]:" << std::endl;
             std::cout << "A: ";
             int from;
-            std::cin >> from;
-            if(std::cin.fail())
+            if(!(std::cin >> from))
             {
                 throw("Range value error!");
             }
             std::cout << "B: ";
             int to;
-            std::cin >> to;
-            if(std::cin.fail())
+            if(!(std::cin >> to))
             {
                 throw("Range value error!");
             }
