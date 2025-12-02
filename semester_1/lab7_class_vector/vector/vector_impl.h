@@ -7,6 +7,8 @@
 
 class Vector
 {
+friend std::ostream& operator << (std::ostream& outstream, const Vector& vec);
+
 private:
     std::size_t size_ = 0;
     std::size_t capacity_ = 0;
