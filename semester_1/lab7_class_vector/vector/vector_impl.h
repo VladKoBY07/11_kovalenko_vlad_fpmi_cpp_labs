@@ -14,235 +14,56 @@ private:
 
 public:
     // конструктор по умолчанию
-    Vector(){};
+    Vector();
 
     // конструктор заполнения нулями
-    Vector(std::size_t amount): size_(amount), capacity_(size_), arr_(new int [capacity_])
-    {
-        for(std::size_t i = 0; i < amount; ++i)
-        {
-            arr_[i] = 0;
-        }
-    }
+    Vector(std::size_t amount);
 
     // конструктор для заполнения списком
-    Vector(std::initializer_list<int> elements): size_(elements.size()), capacity_(size_), arr_(new int [capacity_])
-    {
-        std::copy(elements.begin(), elements.end(), arr_);
-    }
+    Vector(std::initializer_list<int> elements);
 
     // конструктор заполнения числом
-    Vector(int number, std::size_t amount): size_(amount), capacity_(size_), arr_(new int [capacity_])
-    {
-        for(std::size_t i = 0; i < amount; ++i)
-        {
-            arr_[i] = number;
-        }
-    }
+    Vector(int number, std::size_t amount);
 
     // деструктор
-    ~Vector()
-    {
-        delete [] arr_;
-    }
+    ~Vector();
 
     // конструктор копирования
-    Vector(const Vector& other)
-    {
-        size_ = other.size_;
-        capacity_ = other.capacity_;
-        arr_ = new int [capacity_];
-
-        for(size_t i = 0; i < size_; ++i)
-        {
-            arr_[i] = other.arr_[i];
-        }
-    }
+    Vector(const Vector& other);
 
     // конструктор копирования через присваивание
-    Vector& operator = (const Vector& other)
-    {
-        if(this == &other)
-        {
-            return *this;
-        }
-
-        delete [] arr_;
-
-        size_ = other.size_;
-        capacity_ = other.capacity_;
-        arr_ = new int [capacity_];
-
-        for(size_t i = 0; i < size_; ++i)
-        {
-            arr_[i] = other.arr_[i];
-        }
-
-        return *this;
-    }
+    Vector& operator = (const Vector& other);
 
     // swap векторов
-    Vector& Swap(Vector& second)
-    {
-        std::swap(arr_, second.arr_);
-        std::swap(size_, second.size_);
-        std::swap(capacity_, second.capacity_);
-
-        return *this;
-    }
+    Vector& Swap(Vector& second);
 
     // оператор индексирования (константный)
-    const int& operator [](const std::size_t& index) const
-    {
-        if(index >= size_)
-        {
-            throw std::out_of_range("Out of range!");
-        }
-
-        return arr_[index];
-    }
+    const int& operator [](const std::size_t& index) const;
 
     // оператор индексирования
-    int& operator [](const std::size_t& index)
-    {
-        if(index >= size_)
-        {
-            throw std::out_of_range("Out of range!");
-        }
-
-        return arr_[index];
-    }
+    int& operator [](const std::size_t& index);
 
     // метод At константный
-    const int& At (const std::size_t& index) const
-    {
-        if(index >= size_)
-        {
-            throw std::out_of_range("Index is out of range");
-        }
-
-        return arr_[index];
-    }
+    const int& At (const std::size_t& index) const;
 
     // метод At
-    int& At (const std::size_t& index)
-    {
-        if(index >= size_)
-        {
-            throw std::out_of_range("Index is out of range");
-        }
-
-        return arr_[index];
-    }
+    int& At (const std::size_t& index);
 
     // метод size
-    std::size_t Size() const
-    {
-        return size_;
-    }
+    std::size_t Size() const;
 
     // метод capacity
-    std::size_t Capacity() const
-    {
-        return capacity_;
-    }
+    std::size_t Capacity() const;
 
     // метод PushBack
-    Vector& PushBack (int number)
-    {
-        if(size_ == capacity_)
-        {
-            // reallocate
-            std::size_t new_capacity;
-            if(capacity_ == 0)
-            {
-                new_capacity = 1;
-            }
-            else
-            {
-                new_capacity = capacity_ * 2;
-            }
-
-            int* new_arr = new int [new_capacity];
-            for(std::size_t i = 0; i < size_; ++i)
-            {
-                new_arr[i] = arr_[i];
-            }
-
-            delete [] arr_;
-            arr_ = new_arr;
-            capacity_ = new_capacity;
-        }
-
-        arr_[size_] = number;
-        size_++;
-
-        return *this;
-    }
+    Vector& PushBack (int number);
 
     // метод PopBack
-    Vector& PopBack()
-    {
-        if(size_ > 0)
-        {
-            size_ --;
-        }
-
-        return *this;
-    }
+    Vector& PopBack();
 
     // метод clear
-    Vector& Clear()
-    {
-        if(size_ == 0)
-        {
-            return *this;
-        }
-        for(std::size_t i = 0; i < size_; ++i)
-        {
-            arr_[i] = 0;
-        }
-
-        size_ = 0;
-        return *this;
-    }
+    Vector& Clear();
 
     // метод Reserve
-    Vector& Reserve(std::size_t new_capacity)
-    {
-        if(new_capacity <= capacity_)
-        {
-            return *this;
-        }
-
-        int* new_arr = new int [new_capacity];
-
-        for(std::size_t i = 0; i < size_; ++i)
-        {
-            new_arr[i] = arr_[i];
-        }
-        delete [] arr_;
-
-        arr_ = new_arr;
-        capacity_ = new_capacity;
-
-        return *this;
-    }
+    Vector& Reserve(std::size_t new_capacity);
 };
-
-
-
-std::ostream& operator << (std::ostream& outstream, const Vector& vec)
-{
-    outstream << "[";
-    for(std::size_t i = 0; i < vec.Size(); ++i)
-    {
-        if(i > 0)
-        {
-            outstream << ", ";
-        }
-        outstream << vec[i];
-    }
-    outstream << "]";
-    return outstream;
-}
