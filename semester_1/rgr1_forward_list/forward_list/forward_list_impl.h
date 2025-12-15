@@ -2,12 +2,13 @@
 
 #include <iterator>
 #include <iostream>
+#include <cstdint>
 
 class ForwardList {
 
 private:
     struct Node {
-        int32_t value_;
+        std::int32_t value_;
         Node* next_;
 
         explicit Node(int value) : value_(value), next_(nullptr) {
@@ -19,7 +20,7 @@ public:
     public:
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = int32_t;
+        using value_type = std::int32_t;
         using pointer = value_type*;
         using reference = value_type&;
 
@@ -40,7 +41,7 @@ public:
         }
 
         bool operator==(const ForwardListIterator& other) const {
-            // your code goes here
+            return position_ == other.position_;
         }
 
         bool operator!=(const ForwardListIterator& other) const {
@@ -61,22 +62,14 @@ public:
 
     // methods for "ranged-based for loop"
     // 1) non-const version
-    ForwardListIterator begin() {
-        // your code goes here
-    }
-    ForwardListIterator end() {
-        // your code goes here
-    }
+    ForwardListIterator begin();
+    ForwardListIterator end();
 
     // 2) const version
     // TODO: think about return type
     // (is it exactly ForwardListIterator?)
-    ForwardListIterator begin() const {
-        // your code goes here
-    }
-    ForwardListIterator end() const {
-        // your code goes here
-    }
+    ForwardListIterator begin() const ;
+    ForwardListIterator end() const ;
 
     // default constructor
     ForwardList();
@@ -125,5 +118,5 @@ public:
     size_t Size() const;
 
 private:
-    // your code goes here
+    Node* head_;
 };
