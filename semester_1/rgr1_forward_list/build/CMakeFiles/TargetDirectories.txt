@@ -1,0 +1,7 @@
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/CMakeFiles/contrib_catch_main.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/CMakeFiles/test-all.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/CMakeFiles/edit_cache.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/CMakeFiles/rebuild_cache.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/forward_list/CMakeFiles/test_forward_list.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/forward_list/CMakeFiles/edit_cache.dir
+/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/build/forward_list/CMakeFiles/rebuild_cache.dir

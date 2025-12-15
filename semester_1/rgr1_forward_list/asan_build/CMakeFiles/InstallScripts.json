@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/asan_build/cmake_install.cmake",
+		"/home/vladislav/Vlad/11_kovalenko_vlad_fpmi_cpp_labs/semester_1/rgr1_forward_list/asan_build/forward_list/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
