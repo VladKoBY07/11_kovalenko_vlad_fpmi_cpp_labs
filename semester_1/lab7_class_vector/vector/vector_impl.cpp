@@ -145,7 +145,7 @@ Vector& Vector::PushBack (int number)
     {
         // reallocate
         std::size_t new_capacity;
-        if(capacity_ == 0)
+        if(capacity_ == 0u)
         {
             new_capacity = 1;
         }
