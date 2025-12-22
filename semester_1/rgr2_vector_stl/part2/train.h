@@ -20,38 +20,32 @@ private:
     TrainType type_;   // тип поезда
     std::string destination_;   // название пункта назначения
     std::time_t dispatch_time_;   // время отправления
-    std::time_t travelling_time_;   // время в пути
+    std::time_t travelling_time_;   // время в пути (в секундах)
 
 public:
     Train() = default;
 
     Train(TrainId id, TrainType type, const std::string& destination, std::time_t disp_time, std::time_t travel_time):
-    id_(id), type_(type), destination_(destination), dispatch_time_(disp_time), travelling_time_(travel_time) {}
+    id_(id), type_(type), destination_(destination), dispatch_time_(disp_time), travelling_time_(travel_time) {};
 
-    // Геттеры всех полей
-    TrainId Get_id() const
-    {
-        return id_;
-    }
-
-    TrainType Get_type() const
-    {
-        return type_;
-    }
-
-    std::string Get_destination() const
-    {
-        return destination_;
-    }
-
-    std::time_t Get_dispatch() const
+    std::time_t GetDispatchTime() const
     {
         return dispatch_time_;
     }
 
-    std::time_t Get_travelling() const
+    std::time_t GetTravelTime() const
     {
         return travelling_time_;
+    }
+
+    std::string GetDestination() const
+    {
+        return destination_;
+    }
+
+    TrainType GetType() const
+    {
+        return type_;
     }
 
     // Ввод типа поезда
@@ -85,6 +79,7 @@ public:
 // печать информации о поезде
     void PrintTrainInfo(const Train& single_train)
     {
+        std::cout << std::endl;
         std::cout << "Поезд №" << single_train.id_;
         std::string lable;
         switch (single_train.type_)
@@ -117,7 +112,13 @@ public:
         std::cout << " | " << "Тип: " << lable;
         std::cout << " | " << "Пункт назначения: " << single_train.destination_;
         std::cout << " | " << "Время отправления: ";
-        PrintTime(single_train.dispatch_time_);
+        time_utility::PrintTime(single_train.GetDispatchTime());
+
         std::cout << " | " << "Время в пути: ";
-        PrintTime(single_train.travelling_time_);
+        std::time_t travel_sec = single_train.GetTravelTime();
+        int hours = travel_sec / 3600;
+        int mins = (travel_sec % 3600) / 60;
+        std::cout << hours << " часов " << mins << " минут";
+        
+        std::cout << std::endl;
     }

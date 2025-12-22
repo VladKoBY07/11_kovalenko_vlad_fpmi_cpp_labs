@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 // time_utility test?
 /*int main() {
@@ -36,6 +37,11 @@
 
     return EXIT_SUCCESS;
 }*/
+
+size_t to_seconds(size_t hours, size_t mins)
+{
+    return hours * 3600 + mins * 60;
+}
 
 std::vector<Train> ReadFile(const std::string& inputfile)
 {
@@ -79,7 +85,8 @@ std::vector<Train> ReadFile(const std::string& inputfile)
         // преобразование данных
         TrainType type = Train::Select_train_type(string_type);
         std::time_t disp_time = time_utility::SetTime(disp_hours, disp_minutes);
-        std::time_t travel_time = time_utility::SetTime(travel_hours, travel_minutes);
+
+        std::time_t travel_time = to_seconds(travel_hours, travel_minutes);
 
         Train new_train(id, type, destination, disp_time, travel_time);
         all_trains.push_back(new_train);
@@ -97,17 +104,114 @@ void PrintList(const std::vector<Train>& trains_list)
     }
 }
 
+void SortByDispatchTime(std::vector<Train>& trains_list)
+{
+    std::sort(trains_list.begin(), trains_list.end(),
+    [](const Train& first, const Train& second)
+    {
+        return first.GetDispatchTime() < second.GetDispatchTime();
+    });
+}
+
+void PrintTrainsInTimePeriod(const std::vector<Train>& trains_list, std::time_t begin_time, std::time_t end_time)
+{
+    bool found_trains = false;
+    for(int i = 0; i < trains_list.size(); ++i)
+    {
+        std::time_t disp_time = trains_list[i].GetDispatchTime();
+        if((disp_time >= begin_time) && (disp_time <= end_time))
+        {
+            PrintTrainInfo(trains_list[i]);
+            found_trains = true;
+        }
+    }
+
+    if(!found_trains)
+    {
+        std::cout << "На этом интервале поездов нет" << std::endl;
+    }
+}
+
+void PrintTrainsWithDestination(const std::vector<Train>& trains_list, const std::string& destination)
+{
+    bool found_trains = false;
+    for(int i = 0; i < trains_list.size(); ++i)
+    {
+        if(trains_list[i].GetDestination() == destination)
+        {
+            PrintTrainInfo(trains_list[i]);
+            found_trains = true;
+        }
+    }
+
+    if(!found_trains)
+    {
+        std::cout << "В этом направлении поездов нет" << std::endl;
+    }
+}
+
+void PrintTrainsWithTypeAndDestination(const std::vector<Train>& trains_list, const TrainType type, const std::string& destination)
+{
+    bool found_trains = false;
+    for(int i = 0; i < trains_list.size(); ++i)
+    {
+        if(( trains_list[i].GetType() == type )&&( trains_list[i].GetDestination() == destination ))
+        {
+            PrintTrainInfo(trains_list[i]);
+            found_trains = true;
+        }
+    }
+
+    if(!found_trains)
+    {
+        std::cout << "Поездов такого типа в этом направлении нет" << std::endl;
+    }
+}
+
+void FindFastestTrainWithDestination(const std::vector<Train>& trains_list, const std::string& destination)
+{
+    bool found_trains_destination = false;
+    std::time_t min_time;
+    int fastest_index;
+    for(int i = 0; i < trains_list.size(); ++i)
+    {
+        if(trains_list[i].GetDestination() == destination)
+        {
+            min_time = trains_list[i].GetTravelTime();
+            fastest_index = i;
+            found_trains_destination = true;
+            break;
+        }
+    }
+
+    if(found_trains_destination)
+    {
+        for(int i = 0; i < trains_list.size(); ++i)
+        {
+            if((trains_list[i].GetDestination() == destination)&&(trains_list[i].GetTravelTime() < min_time))
+            {
+                min_time = trains_list[i].GetTravelTime();
+                fastest_index = i;
+            }
+        }
+        PrintTrainInfo(trains_list[fastest_index]);
+    }
+    else
+    {
+        std::cout << "В этом направлении нет поездов" << std::endl;
+    }
+}
+
 int main()
 {
     try
     {
         std::cout << "---Программа для управления расписанием поездов---" << std::endl;
-        std::cout << "--------------------------------------------------";
+        std::cout << "--------------------------------------------------" << std::endl;
 
         std::string inputfile = "Input.txt";
         std::cout << "Чтение файла " << inputfile << " ..." << std::endl;
-        std::vector<Train> trains_list;
-        trains_list = ReadFile(inputfile);
+        std::vector<Train> trains_list = ReadFile(inputfile);
 
         if(trains_list.empty())
         {
@@ -115,11 +219,34 @@ int main()
         }
 
         std::cout << "Успешно загружено " << trains_list.size() << " поездов!" << std::endl;
-        std::cout << "--------------------------------------------------";
+        std::cout << "--------------------------------------------------" << std::endl;
 
-        std::cout << "Сортировка поездов по времени отправления поездов:";
+        std::cout << "Сортировка поездов по времени отправления поездов:" << std::endl;
+        SortByDispatchTime(trains_list);
         PrintList(trains_list);
+        std::cout << "--------------------------------------------------" << std::endl;
+        
+        std::cout << "Все поезда, отправляющиеся с 8.00 до 12.00:" << std::endl;
+        std::time_t begin_time = time_utility::SetTime(8, 0);
+        std::time_t end_time = time_utility::SetTime(12, 0);
+        PrintTrainsInTimePeriod(trains_list, begin_time, end_time);
+        std::cout << "--------------------------------------------------" << std::endl;
 
+        std::cout << "Все поезда, направляющиеся в Москву:" << std::endl;
+        std::string destination_search = "Москва";
+        PrintTrainsWithDestination(trains_list, destination_search);
+        std::cout << "--------------------------------------------------" << std::endl;
+
+        std::cout << "Все высокоскоростные поезда, направляющиеся в Москву:" << std::endl;
+        std::string destination_search_second = "Москва";
+        TrainType type_search = TrainType::HIGH_SPEED;
+        PrintTrainsWithTypeAndDestination(trains_list, type_search, destination_search_second);
+        std::cout << "--------------------------------------------------" << std::endl;
+
+        std::cout << "Самый быстрый поезд, направляющийся в Москву:" << std::endl;
+        std::string destination_search_third = "Москва";
+        FindFastestTrainWithDestination(trains_list, destination_search_third);
+        std::cout << "--------------------------------------------------" << std::endl;
     }
     catch(const char* msg)
     {
